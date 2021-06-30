@@ -1,0 +1,69 @@
+useCallback memoizes the function, useMemo memoizes the value
+useCallback memoizes the function which we can then use later
+with filteredUsers this will be the data thats calculated and returned back
+
+useMemo: want to re-render the component only when the state/props of the component change
+
+for the example 1 in the console we have only one render for text, search
+we also get 2 renders for filtered users because we have 2 users
+filtered users function is re-rendered twice each time we type
+this happens because every re-render of our component all starts at the first console.log
+all lines inside component happens every render
+so all the console.logs and functions are re-rendered
+when we type something everything in the component re-renders
+this is the problem as every time we type something everything in our component re-renders and
+re-calculates
+filteredUsers doesnt make any sense to be recalculated every time we type because the array only changes
+when we hit the button to filter the users
+so it doesnt make sense to apply the filtering everytime the component renders
+we want to do the filtering function only when search changes
+
+memoized in javascript is when we have some difficult calculations we can remember a value and change it when the 
+dependencies change
+inside useMemo we are providing a function which returns something that needs to be memoized
+recalculate the filtering only when search changes
+only now when we click the search button / change the search state do we recalculate the filtering and re-render the users
+
+useCallback:
+
+When we change the state our app component and child component re-renders
+When state in parent changes -> child re-renders
+So if we have an input in app.js:
+
+<input type="text" value={text} onChange={handleText} />
+<List users={users} onRemove={handleRemove} />
+
+Every time we type in the input the child component(list) re-renders
+
+memo:
+
+looks at the props that are incoming into the component and says I will only re-render you
+if any of the props you are receiving has changed
+
+Three memoization techniques
+1) Memoize your components with React.memo()
+2) Memoize a computed value with the useMemo() hook
+3) Memoize a function with the useCallback() hook
+
+3 ways that a component will render:
+Rendering means it will do all the calculations in the component and puts all the elements in the container div on to the dom
+
+1) Its state changes
+2) The props it receives changes
+3) When the parent re-renders, by default the child will always re-render - for the most part this is 
+not an issue as react is very performant
+However there may be some components that are very big or can be useful when using state management
+
+Memoization -
+. A speed optimization techinique in programming, where given a function,
+you return a cached version of the output if the same inputs are used
+. A memoized function remembers the results of an output for a given set of inputs
+. In React, we can memoize components(where the inputs are props), functions, or just a regular computer value
+. When memoizing components, it does a shallow comparison(by default) of the props, and if it sees that it has
+changed, then it will re-render
+. It does a shallow comparison of the props - meaning if you are passing as props lets say an object,
+something thats not a primitive value such as an object/array/function - it does a shallow comparison
+meaning it only checks if the reference to the objects have changed or not.
+Even if its exactly the same identical object - if its not the same reference in memory then it wont re-render
+React component by default will think you have passed it new props
+. Memoization is not free - you are trading space for time. You are storing the set of input/outputs in memory/cache
